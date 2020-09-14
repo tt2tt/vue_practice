@@ -14,6 +14,9 @@ export default new Vuex.Store({
     setLoginUser (state, user) {
       state.login_user = user
     },
+    deleteLoginUser ( state ) {
+      state.login_user = null
+    },
     toggleSideMenu (state) {
       state.drawer = !state.drawer
     },
@@ -24,6 +27,12 @@ export default new Vuex.Store({
   actions: {
     setLoginUser ( { commit }, user ) {
       commit('setLoginUser', user)
+    },
+    deleteLoginUser( { commit } ) {
+      commit('deleteLoginUser')
+    },
+    logout () {
+      firebase.auth().signOut()
     },
     login () {
       const google_auth_provider = new firebase.auth.GoogleAuthProvider()
@@ -36,6 +45,8 @@ export default new Vuex.Store({
       commit('addAddress', address)
     }
   },
-  modules: {
+  getters: {
+    userName: state => state.login_user ? state.login_user.displayName : '',
+    photoURL: state => state.login_user ? state.login_user.photoURL: ''
   }
 })
